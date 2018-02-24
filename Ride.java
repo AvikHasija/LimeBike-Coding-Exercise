@@ -1,8 +1,8 @@
 import java.util.Date;
 
 /**
-* Created by  Avik Hasija on 02/23/2018.
-*/
+ * Created by  Avik Hasija on 02/23/2018.
+ */
 
 public class Ride {
     private Date mStartTime;

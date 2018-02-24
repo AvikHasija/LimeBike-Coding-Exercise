@@ -1,8 +1,12 @@
 import java.util.Date;
 
 /**
-* Created by  Avik Hasija on 02/23/2018.
-*/
+ * Created by  Avik Hasija on 02/23/2018.
+ * 
+ * This class is the data model for a ride endpoint, which stores time, the active basket, and whether the stored
+ * time corresponds to an ending ride. Since there are no tuples in Java, this is the easiest way to keep track of
+ * ride endpoints to calculate basket items for each interval
+ */
 
 public class RideEndpoint{
     private Date mTime;

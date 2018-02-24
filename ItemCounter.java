@@ -7,8 +7,8 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
-* Created by  Avik Hasija on 02/23/2018.
-*/
+ * Created by  Avik Hasija on 02/23/2018.
+ */
 
 public class ItemCounter{
     ArrayList<RideEndpoint> rideEndpointsLog = new ArrayList<>();
