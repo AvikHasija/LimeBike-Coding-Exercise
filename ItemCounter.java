@@ -1,5 +1,6 @@
 import java.util.Date;
 import java.util.HashMap;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +12,7 @@ import java.util.List;
  */
 
 public class ItemCounter{
+    SimpleDateFormat mSDF = new SimpleDateFormat("HH:mm");
     ArrayList<RideEndpoint> rideEndpointsLog = new ArrayList<>();
 
     public static void main (String[] args){
@@ -25,27 +27,31 @@ public class ItemCounter{
          * For the purposes of this exercise, mock data has been created to test.
         */
 
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        //Creating ride objects and processing
-        processRide(new Ride(sdf.parse("07:00"), sdf.parse("07:30"), new Basket(new HashMap<String, Integer>(){
-            {
-                put("apple", 2);
-                put("brownie", 1);
-            }
-        })));
-        processRide(new Ride(sdf.parse("07:10"), sdf.parse("08:00"), new Basket(new HashMap<String, Integer>(){
-            {
-                put("apple", 1);
-                put("carrot", 3);
-            }
-        })));
-        processRide(new Ride(sdf.parse("07:20"), sdf.parse("07:45"), new Basket(new HashMap<String, Integer>(){
-            {
-                put("apple", 2);
-                put("brownie", 2);
-                put("diamond", 4);
-            }
-        })));
+        try{
+            //Creating ride objects and processing
+            processRide(new Ride(mSDF.parse("07:00"), mSDF.parse("07:30"), new Basket(new HashMap<String, Integer>(){
+                {
+                    put("apple", 2);
+                    put("brownie", 1);
+                }
+            })));
+            processRide(new Ride(mSDF.parse("07:10"), mSDF.parse("08:00"), new Basket(new HashMap<String, Integer>(){
+                {
+                    put("apple", 1);
+                    put("carrot", 3);
+                }
+            })));
+            processRide(new Ride(mSDF.parse("07:20"), mSDF.parse("07:45"), new Basket(new HashMap<String, Integer>(){
+                {
+                    put("apple", 1);
+                    put("brownie", 2);
+                    put("diamond", 4);
+                }
+            })));
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
+        
 
         //Print interval data
         printItemsPerInterval();
@@ -80,12 +86,20 @@ public class ItemCounter{
             previousTime = currentTime;
             currentTime = currentEndpoint.getTime();
 
-            //Add or remove from basket depending on whether ride is starting/ending
-            //if(currentEndpoint.getIsRideEnding() ? currentBasket.removeItems(currentEndpoint.getBasket()) : currentBasket.addItems(currentEndpoint.getBasket()));
-            
             if (previousTime != null && !currentTime.equals(previousTime)){
                 //Print only if this is not the first endpoint in the list and there are no duplicate times
-                System.out.print(previousTime + "-" + currentTime + "->");
+                System.out.print(mSDF.format(previousTime) + "-" + mSDF.format(currentTime) + " -> ");
+                for(String itemName : currentBasket.getItems().keySet()){
+                    System.out.print(currentBasket.getItems().get(itemName) + " " + itemName + ", ");
+                }
+                System.out.print('\n');
+            }
+
+            //Add or remove from basket depending on whether ride is starting/ending
+            if(currentEndpoint.getIsRideEnding()){
+                currentBasket.removeItems(currentEndpoint.getBasket());
+            } else {
+                currentBasket.addItems(currentEndpoint.getBasket());
             }
         }
     }

@@ -43,7 +43,7 @@ public class Basket {
                     mItems.put(itemName, (mItems.get(itemName) - items.get(itemName)));
                 }
             } else {
-                throw new Exception("Item is not in basket, and cannot be removed!");
+                throw new Error("Item is not in basket, and cannot be removed!");
             }
         }
     }
