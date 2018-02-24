@@ -1,4 +1,6 @@
 import java.util.Date;
+import java.util.HashMap;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,11 +11,44 @@ import java.util.List;
 */
 
 public class ItemCounter{
-    ArrayList<RideEndpoint> rideEndpointsLog = new ArrayList<RideEndpoint>();
+    ArrayList<RideEndpoint> rideEndpointsLog = new ArrayList<>();
 
     public static void main (String[] args){
-        //Create fake rides
-        
+        new ItemCounter();   
+    }
+
+    public ItemCounter(){
+        /**
+         * Ride data would presumably be fetched from a data source like an API, then
+         * deserialized to Java Ride objects (ie. using a library like Gson).
+         * 
+         * For the purposes of this exercise, mock data has been created to test.
+        */
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        //Creating ride objects and processing
+        processRide(new Ride(sdf.parse("07:00"), sdf.parse("07:30"), new Basket(new HashMap<String, Integer>(){
+            {
+                put("apple", 2);
+                put("brownie", 1);
+            }
+        })));
+        processRide(new Ride(sdf.parse("07:10"), sdf.parse("08:00"), new Basket(new HashMap<String, Integer>(){
+            {
+                put("apple", 1);
+                put("carrot", 3);
+            }
+        })));
+        processRide(new Ride(sdf.parse("07:20"), sdf.parse("07:45"), new Basket(new HashMap<String, Integer>(){
+            {
+                put("apple", 2);
+                put("brownie", 2);
+                put("diamond", 4);
+            }
+        })));
+
+        //Print interval data
+        printItemsPerInterval();
     }
 
     public void processRide(Ride ride){
@@ -32,16 +67,25 @@ public class ItemCounter{
             }
         });
 
-        //Now, iterate through endpoint objects, keeping track of previous time to print intervals.
+        //Now, iterate through list of endpoint objects, keeping track of previous time to print intervals.
         //Create an active basket to print and update at each endpoint object.
         Date previousTime = null;
-        Basket currentBasket;
+        Date currentTime = null;
+        Basket currentBasket = new Basket();
+    
         for(int i = 0; i < rideEndpointsLog.size(); i++){
-            if (previousTime == null){ //Handling first endpoint in list
-                previousTime = rideEndpointsLog.get(i).getTime();
+            RideEndpoint currentEndpoint = rideEndpointsLog.get(i);
 
-            } else {
+            //Update previous and current times.
+            previousTime = currentTime;
+            currentTime = currentEndpoint.getTime();
 
+            //Add or remove from basket depending on whether ride is starting/ending
+            //if(currentEndpoint.getIsRideEnding() ? currentBasket.removeItems(currentEndpoint.getBasket()) : currentBasket.addItems(currentEndpoint.getBasket()));
+            
+            if (previousTime != null && !currentTime.equals(previousTime)){
+                //Print only if this is not the first endpoint in the list and there are no duplicate times
+                System.out.print(previousTime + "-" + currentTime + "->");
             }
         }
     }

@@ -12,18 +12,16 @@ public class Basket {
         mItems = new HashMap<String, Integer>();
     }
 
-    public Basket(HashMap items){
+    public Basket(HashMap<String, Integer> items){
         mItems = items;
     }
 
     //Method to add items to basket
-    public void addItems(HashMap<String, Integer> itemsToAdd){
-        for(Map.Entry<String, Integer> item : itemsToAdd.entrySet()){
-
-        }
+    public void addItems(Basket appendItems){
+        
     }
 
-    public void removeItems(HashMap<String, Integer> itemsToRemove){
+    public void removeItems(Basket removeItems){
 
     }
 

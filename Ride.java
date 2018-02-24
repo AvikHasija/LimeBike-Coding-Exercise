@@ -1,4 +1,3 @@
-import java.sql.Time;
 import java.util.Date;
 
 /**
@@ -9,6 +8,12 @@ public class Ride {
     private Date mStartTime;
     private Date mEndTime;
     private Basket mBasket;
+
+    public Ride(Date startTime, Date endTime, Basket basket){
+        mStartTime = startTime;
+        mEndTime = endTime;
+        mBasket = basket;
+    }
     
     //Mutator methods for class variables
     public Date getStartTime(){
